@@ -10,6 +10,7 @@ import { appendAudit } from '../utils/sahayakMock.js';
 import { DISTRICTS } from '../data/districts.js';
 import SuccessAnimation from '../components/SuccessAnimation.jsx';
 import CrossSchemeChain from '../components/CrossSchemeChain.jsx';
+import DocumentScanner from '../components/DocumentScanner.jsx';
 
 export default function Apply() {
   const { id } = useParams();
@@ -30,6 +31,7 @@ export default function Apply() {
 
   const [docs, setDocs] = useState({});
   const [showOCR, setShowOCR] = useState(null);
+  const [activeScannerDoc, setActiveScannerDoc] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showRelated, setShowRelated] = useState(false);
@@ -58,12 +60,23 @@ export default function Apply() {
     { label: lang === 'ta' ? 'வேலை' : 'Occupation', value: vault.occupation || '—' },
   ];
 
-  const handleDoc = (docName, file) => {
-    setShowOCR(docName);
-    setTimeout(() => {
-      setDocs((d) => ({ ...d, [docName]: file?.name || 'captured.jpg' }));
-      setShowOCR(null);
-    }, 1500);
+  const handleDocExtracted = (data, base64) => {
+    if (activeScannerDoc) {
+      setDocs((d) => ({ ...d, [activeScannerDoc]: 'scanned.jpg' }));
+      
+      // Auto-fill vault if data is found
+      if (data && Object.keys(data).length > 0) {
+        setVault((prev) => {
+            const updates = {};
+            if (data.name) updates.name = data.name;
+            if (data.dob) updates.dob = data.dob;
+            if (data.idNumber) updates.idNumber = data.idNumber;
+            if (data.address) updates.address = data.address;
+            return { ...prev, ...updates };
+        });
+      }
+      setActiveScannerDoc(null);
+    }
   };
 
   const allDocsDone = scheme.documents_required.every((d) => docs[d]);
@@ -141,9 +154,11 @@ export default function Apply() {
             {scheme.documents_required.map((d) => {
               const done = !!docs[d];
               return (
-                <label
+                <button
                   key={d}
-                  className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-colors cursor-pointer ${
+                  onClick={() => setActiveScannerDoc(d)}
+                  type="button"
+                  className={`w-full text-left flex items-center gap-3 p-3 rounded-xl border-2 transition-colors cursor-pointer ${
                     done ? 'border-brand-green bg-brand-green/5' : 'border-gray-200 bg-white'
                   }`}
                 >
@@ -162,14 +177,7 @@ export default function Apply() {
                         : t('apply_tap_photo', lang)}
                     </div>
                   </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    capture="environment"
-                    onChange={(e) => handleDoc(d, e.target.files?.[0])}
-                    className="hidden"
-                  />
-                </label>
+                </button>
               );
             })}
           </div>
@@ -195,6 +203,34 @@ export default function Apply() {
           </p>
         )}
       </div>
+
+      {/* Active Scanner Overlay */}
+      <AnimatePresence>
+        {activeScannerDoc && (
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+          >
+            <div className="p-4 pt-10 min-h-[100dvh] flex flex-col">
+              <h3 className="text-white mb-6 text-center text-xl font-bold">
+                {lang === 'ta' ? `ஸ்கேன் செய்க: ${activeScannerDoc}` : `Scanning: ${activeScannerDoc}`}
+              </h3>
+              <DocumentScanner 
+                onDataExtracted={handleDocExtracted} 
+                lang={lang} 
+                autoOpen={true} 
+              />
+              <button 
+                onClick={() => setActiveScannerDoc(null)} 
+                className="mt-auto text-white p-4 border border-white/20 rounded-xl"
+              >
+                {lang === 'ta' ? 'ரத்துசெய்' : 'Cancel'}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* OCR processing overlay */}
       <AnimatePresence>

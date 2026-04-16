@@ -6,6 +6,7 @@ import { DISTRICTS } from '../data/districts.js';
 import { t } from '../data/strings.js';
 import { getAuditLog } from '../utils/sahayakMock.js';
 import SahayakMode from '../components/SahayakMode.jsx';
+import DocumentScanner from '../components/DocumentScanner.jsx';
 
 const EDITABLE_FIELDS = [
   { key: 'name', type: 'text', labelTa: 'பெயர்', labelEn: 'Name' },
@@ -20,6 +21,9 @@ const EDITABLE_FIELDS = [
   { key: 'caste', type: 'select', options: [['General', 'General'], ['OBC', 'OBC'], ['SC', 'SC'], ['ST', 'ST']], labelTa: 'சாதி', labelEn: 'Caste' },
   { key: 'ration_card_number', type: 'text', labelTa: 'குடும்ப அட்டை எண்', labelEn: 'Ration Card #' },
   { key: 'aadhaar_last4', type: 'text', labelTa: 'ஆதார் கடைசி 4', labelEn: 'Aadhaar last 4' },
+  { key: 'dob', type: 'text', labelTa: 'பிறந்த தேதி', labelEn: 'Date of Birth' },
+  { key: 'idNumber', type: 'text', labelTa: 'அடையாள எண்', labelEn: 'ID Number' },
+  { key: 'address', type: 'text', labelTa: 'முகவரி', labelEn: 'Address' },
 ];
 
 export default function Profile() {
@@ -44,6 +48,20 @@ export default function Profile() {
       setVault({ [editing]: draft || null });
     }
     setEditing(null);
+  };
+
+  const handleOcrData = (data) => {
+    // Only update fields that Claude successfully extracted
+    const updates = {};
+    if (data.name) updates.name = data.name;
+    if (data.dob) updates.dob = data.dob;
+    if (data.idNumber) updates.idNumber = data.idNumber;
+    if (data.address) updates.address = data.address;
+    
+    // Convert 'DD/MM/YYYY' dob to age approximately if needed, or just keep dob
+    if (Object.keys(updates).length > 0) {
+      setVault(updates);
+    }
   };
 
   const renderValue = (f) => {
@@ -87,6 +105,9 @@ export default function Profile() {
             <div className="text-xs opacity-90">{t('profile_privacy', lang)}</div>
           </div>
         </div>
+
+        {/* Document Scanner UI */}
+        <DocumentScanner onDataExtracted={handleOcrData} lang={lang} />
 
         {/* Fields */}
         <div className="card divide-y divide-gray-100">
