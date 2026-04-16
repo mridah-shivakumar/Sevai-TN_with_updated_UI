@@ -211,8 +211,8 @@ export default function ChatOnboarding({ onComplete, lang, setLang }) {
         );
       case 'district':
         return (
-          <div className="overflow-x-auto hide-scrollbar -mx-2 px-2">
-            <div className="flex gap-2 flex-wrap">
+          <div className="max-h-[200px] overflow-y-auto hide-scrollbar -mx-2 px-2">
+            <div className="flex gap-2 flex-wrap justify-center">
               {DISTRICTS.map((d) => (
                 <ChatOpt key={d.id} onClick={() => handleDistrictChoice(d)} size="sm">
                   {lang === 'ta' ? d.ta : d.en}
@@ -260,28 +260,28 @@ export default function ChatOnboarding({ onComplete, lang, setLang }) {
   }, [step, lang, pendingAnswer]);
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-brand-green-dark to-brand-green text-white">
+    <div className="flex flex-col h-[100dvh] bg-brand-white text-brand-ink font-sans relative">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 bg-brand-green-dark/60 backdrop-blur">
+      <header className="flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-full bg-brand-saffron flex items-center justify-center text-xl font-bold">
-            செ
+          <div className="w-10 h-10 rounded-full bg-brand-black flex items-center justify-center text-xl font-bold text-white shadow-md">
+            S
           </div>
           <div>
-            <div className="font-semibold">{t('app_name', lang)}</div>
-            <div className="text-xs opacity-80">{t('tagline', lang)}</div>
+            <div className="font-bold text-lg leading-tight tracking-tight">{t('app_name', lang)} AI</div>
+            <div className="text-[11px] font-semibold text-brand-blue tracking-wider uppercase">Active</div>
           </div>
         </div>
         <button
           onClick={() => setLang(lang === 'ta' ? 'en' : 'ta')}
-          className="text-sm underline underline-offset-2 !min-h-0 !min-w-0 px-2 py-1"
+          className="text-sm font-semibold px-3 py-1 bg-gray-100 rounded-full active:scale-95 transition-transform"
         >
           {t('switch_language', lang)}
         </button>
       </header>
 
       {/* Messages */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
         <AnimatePresence initial={false}>
           {messages.map((m, i) => (
             <motion.div
@@ -292,12 +292,12 @@ export default function ChatOnboarding({ onComplete, lang, setLang }) {
               className={`flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 text-[17px] leading-snug shadow ${
+                className={`max-w-[75%] rounded-[24px] px-5 py-3.5 text-lg font-medium leading-snug shadow-sm ${
                   m.from === 'user'
-                    ? 'bg-brand-saffron text-white rounded-br-sm'
+                    ? 'bg-brand-blue text-white rounded-br-sm'
                     : m.from === 'system'
-                    ? 'bg-brand-amber/90 text-brand-ink'
-                    : 'bg-white text-brand-ink rounded-bl-sm'
+                    ? 'bg-red-50 text-red-600 border border-red-100'
+                    : 'bg-white text-brand-ink rounded-bl-sm border border-gray-100'
                 }`}
               >
                 {m.text}
@@ -310,11 +310,11 @@ export default function ChatOnboarding({ onComplete, lang, setLang }) {
               animate={{ opacity: 1 }}
               className="flex justify-start"
             >
-              <div className="bg-white text-brand-ink rounded-2xl rounded-bl-sm px-4 py-3 shadow">
-                <span className="inline-flex gap-1">
-                  <span className="w-2 h-2 rounded-full bg-brand-muted animate-pulse" />
-                  <span className="w-2 h-2 rounded-full bg-brand-muted animate-pulse [animation-delay:150ms]" />
-                  <span className="w-2 h-2 rounded-full bg-brand-muted animate-pulse [animation-delay:300ms]" />
+              <div className="bg-white border border-gray-100 rounded-[24px] rounded-bl-sm px-5 py-4 shadow-sm">
+                <span className="inline-flex gap-1.5 items-center">
+                  <span className="w-2.5 h-2.5 rounded-full bg-brand-blue/60 animate-pulse" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-brand-blue/60 animate-pulse [animation-delay:150ms]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-brand-blue/60 animate-pulse [animation-delay:300ms]" />
                 </span>
               </div>
             </motion.div>
@@ -324,63 +324,99 @@ export default function ChatOnboarding({ onComplete, lang, setLang }) {
         {/* Pending voice answer confirmation */}
         {pendingAnswer && (
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white text-brand-ink rounded-2xl p-4 shadow mt-2"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white border-2 border-brand-blue rounded-[24px] p-5 shadow-lg mt-4 max-w-[85%] mx-auto"
           >
-            <div className="text-sm text-brand-muted mb-1">
-              {lang === 'ta' ? 'நான் கேட்டது:' : 'I heard:'}
+            <div className="text-xs font-bold uppercase tracking-wider text-brand-blue mb-2">
+              {lang === 'ta' ? 'நான் கேட்டது:' : 'Voice Detected:'}
             </div>
-            <div className="text-lg font-semibold mb-3">{pendingAnswer.text}</div>
-            <div className="flex gap-2">
-              <button onClick={confirmPending} className="btn-primary flex-1">
-                {lang === 'ta' ? 'சரி' : 'Yes'}
+            <div className="text-xl font-black mb-5">{pendingAnswer.text}</div>
+            <div className="flex xl:flex-row gap-3">
+              <button onClick={rejectPending} className="bg-gray-100 text-brand-ink font-bold px-4 py-3 rounded-xl flex-1 active:scale-95 transition-transform">
+                {lang === 'ta' ? 'மாற்று' : 'Wrong'}
               </button>
-              <button onClick={rejectPending} className="btn-secondary flex-1">
-                {lang === 'ta' ? 'மீண்டும்' : 'Retry'}
+              <button onClick={confirmPending} className="bg-brand-blue text-white font-bold px-4 py-3 rounded-xl flex-1 shadow-md active:scale-95 transition-transform">
+                {lang === 'ta' ? 'சரி' : 'Confirm'}
               </button>
             </div>
           </motion.div>
         )}
+        
+        {/* Spacer to push content above fixed bottom */}
+        <div className="h-40" />
       </div>
 
-      {/* Options tray */}
-      <div className="bg-white/10 backdrop-blur p-3 pb-5">
-        {transcribing && (
-          <div className="text-center text-sm opacity-90 mb-2">
-            {lang === 'ta' ? 'கேட்கிறேன்...' : 'Listening...'}
-          </div>
-        )}
-        <div className="bg-white rounded-2xl p-3 text-brand-ink">
-          {options}
-        </div>
+      {/* Fixed Bottom UI: Options & AI Pulse Mic */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent pt-12 pb-6 z-40">
+        
+        <div className="max-w-md mx-auto relative flex flex-col items-center">
+            {/* Options grid fades out when typing or recording to keep UI clean */}
+            <AnimatePresence>
+              {!recording && !typing && !pendingAnswer && options && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
+                  className="w-full bg-white/80 backdrop-blur-xl border border-gray-100 shadow-xl rounded-[32px] p-4 mb-6 relative z-20"
+                >
+                  <div className="text-[11px] font-bold text-gray-400 uppercase tracking-widest text-center mb-3">
+                     {lang === 'ta' ? 'ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும்' : 'Tap an Option'}
+                  </div>
+                  {options}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-        {/* Mic */}
-        <div className="flex justify-center mt-3">
-          <button
-            onClick={toggleRecord}
-            className={`rounded-full w-16 h-16 flex items-center justify-center shadow-lg transition-colors ${
-              recording ? 'bg-red-500 animate-pulse-slow' : 'bg-brand-saffron'
-            }`}
-            aria-label={lang === 'ta' ? 'குரலால் பேசு' : 'Speak answer'}
-          >
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-              <path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3zM5 11a1 1 0 112 0 5 5 0 0010 0 1 1 0 112 0 7 7 0 01-6 6.92V21h-2v-3.08A7 7 0 015 11z" />
-            </svg>
-          </button>
+            {/* AI Pulse Orb / Mic Button */}
+            <div className="relative group flex items-center justify-center">
+              {/* Pulse effect */}
+              {(recording || transcribing) && (
+                <motion.div
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+                  className="absolute w-24 h-24 bg-brand-blue rounded-full blur-2xl z-0 pointer-events-none"
+                />
+              )}
+              
+              <button
+                onClick={toggleRecord}
+                className={`relative z-10 rounded-[32px] w-20 h-20 flex items-center justify-center shadow-2xl transition-all active:scale-90 ${
+                  recording ? 'bg-brand-ink text-white shadow-[0_0_40px_rgba(0,122,255,0.8)]' : 'bg-brand-black text-white hover:bg-gray-800'
+                }`}
+                aria-label={lang === 'ta' ? 'குரலால் பேசு' : 'Speak answer'}
+              >
+                {recording ? (
+                  <div className="flex gap-1.5 items-center justify-center">
+                    <span className="w-1.5 h-6 bg-brand-blue rounded-full animate-[wave_1s_ease-in-out_infinite]" />
+                    <span className="w-1.5 h-10 bg-brand-blue rounded-full animate-[wave_1s_ease-in-out_infinite_0.1s]" />
+                    <span className="w-1.5 h-5 bg-brand-blue rounded-full animate-[wave_1s_ease-in-out_infinite_0.2s]" />
+                  </div>
+                ) : transcribing ? (
+                  <span className="w-6 h-6 border-4 border-white border-t-brand-blue rounded-full animate-spin" />
+                ) : (
+                  <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                    <path d="M12 2c-1.66 0-3 1.34-3 3v7c0 1.66 1.34 3 3 3s3-1.34 3-3V5c0-1.66-1.34-3-3-3zM5 11a1 1 0 112 0 5 5 0 0010 0 1 1 0 112 0 7 7 0 01-6 6.92V21h-2v-3.08A7 7 0 015 11z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            {!recording && !transcribing && !options && !typing && !pendingAnswer && (
+                 <div className="text-xs font-bold text-gray-400 mt-3 absolute -bottom-6">
+                    {lang === 'ta' ? 'பேச மைக்-ஐ அழுத்தவும்' : 'Tap to speak'}
+                 </div>
+            )}
         </div>
+        
       </div>
     </div>
   );
 }
 
-function ChatOpt({ children, onClick, size = 'md' }) {
+function ChatOpt({ children, onClick, size }) {
+  const isSm = size === 'sm';
   return (
     <button
       onClick={onClick}
-      className={`rounded-2xl bg-brand-bg border-2 border-brand-green/20 text-brand-ink font-semibold hover:bg-brand-green/5 active:scale-95 transition-transform ${
-        size === 'sm' ? 'px-4 py-3 text-sm' : 'px-5 py-4 text-base'
-      }`}
+      className={`${isSm ? 'w-auto px-4 py-2.5 text-sm mb-1' : 'w-full px-5 py-4 text-xl mb-2'} text-center rounded-[20px] bg-gray-50 border-2 border-transparent text-[#1A1A1A] font-bold hover:border-[#007AFF] hover:bg-[#007AFF]/5 hover:text-[#007AFF] active:scale-[0.98] transition-all shadow-sm`}
     >
       {children}
     </button>

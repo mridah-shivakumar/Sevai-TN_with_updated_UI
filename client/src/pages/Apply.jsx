@@ -108,16 +108,16 @@ export default function Apply() {
   };
 
   return (
-    <div className="min-h-full pb-28 bg-brand-bg">
-      <header className="bg-brand-green text-white px-4 py-3 flex items-center gap-3 sticky top-0 z-30">
-        <button onClick={() => nav(-1)} className="!min-h-0 !min-w-0 p-2 -ml-2">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+    <div className="min-h-[100dvh] pb-28 bg-[#FAFAFA] font-sans">
+      <header className="bg-white px-5 py-4 border-b border-gray-100 flex items-center gap-4 sticky top-0 z-30 shadow-sm">
+        <button onClick={() => nav(-1)} className="!min-h-0 !min-w-0 p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="#1A1A1A">
             <path d="M15.5 4l-8 8 8 8 1.4-1.4L10.3 12l6.6-6.6z" />
           </svg>
         </button>
         <div className="flex-1 truncate">
-          <div className="font-semibold leading-tight">{scheme.name_plain}</div>
-          <div className="text-[11px] opacity-80">
+          <div className="font-black text-lg tracking-tight text-[#1A1A1A] leading-tight truncate">{scheme.name_plain}</div>
+          <div className="text-[12px] font-bold uppercase tracking-widest text-[#007AFF] mt-0.5">
             {isSahayak
               ? lang === 'ta'
                 ? 'உதவியாளர் முறையில் விண்ணப்பிக்கிறது'
@@ -129,28 +129,34 @@ export default function Apply() {
         </div>
       </header>
 
-      <div className="p-4 space-y-4">
+      <div className="p-5 space-y-6">
         {/* Review section */}
-        <section className="card">
-          <h2 className="text-lg font-bold mb-3">{t('apply_review_title', lang)}</h2>
-          <dl className="grid grid-cols-2 gap-3">
+        <section className="bg-white rounded-[24px] p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-gray-100">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-xl">📋</span>
+            <h2 className="text-lg font-black text-[#1A1A1A] tracking-tight">{t('apply_review_title', lang)}</h2>
+          </div>
+          <dl className="grid grid-cols-2 gap-y-4 gap-x-3">
             {fields.map((f) => (
               <div key={f.label}>
-                <dt className="text-[11px] text-brand-muted uppercase tracking-wide">{f.label}</dt>
-                <dd className="text-sm font-semibold text-brand-ink mt-0.5 break-words">{String(f.value)}</dd>
+                <dt className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">{f.label}</dt>
+                <dd className="text-[15px] font-bold text-[#1A1A1A] mt-0.5 break-words">{String(f.value)}</dd>
               </div>
             ))}
           </dl>
-          <div className="mt-3 text-[11px] text-brand-green flex items-center gap-1.5">
+          <div className="mt-5 text-[11px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5 bg-gray-50 p-2 rounded-lg inline-flex">
             <span>🔒</span>
             <span>{t('device_only', lang)}</span>
           </div>
         </section>
 
         {/* Documents */}
-        <section className="card">
-          <h2 className="text-lg font-bold mb-3">{t('apply_document_title', lang)}</h2>
-          <div className="space-y-2">
+        <section>
+          <div className="flex items-center gap-2 mb-3 px-1">
+            <span className="text-xl">📄</span>
+            <h2 className="text-lg font-black text-[#1A1A1A] tracking-tight">{t('apply_document_title', lang)}</h2>
+          </div>
+          <div className="space-y-3">
             {scheme.documents_required.map((d) => {
               const done = !!docs[d];
               return (
@@ -158,20 +164,20 @@ export default function Apply() {
                   key={d}
                   onClick={() => setActiveScannerDoc(d)}
                   type="button"
-                  className={`w-full text-left flex items-center gap-3 p-3 rounded-xl border-2 transition-colors cursor-pointer ${
-                    done ? 'border-brand-green bg-brand-green/5' : 'border-gray-200 bg-white'
+                  className={`w-full text-left flex items-center gap-4 p-4 rounded-[24px] border-2 transition-all cursor-pointer active:scale-[0.98] ${
+                    done ? 'border-[#007AFF] bg-[#007AFF]/5 shadow-[0_4px_12px_rgba(0,122,255,0.1)]' : 'border-gray-100 bg-white hover:border-gray-200 shadow-sm'
                   }`}
                 >
                   <div
-                    className={`w-11 h-11 rounded-xl grid place-items-center text-xl ${
-                      done ? 'bg-brand-green text-white' : 'bg-gray-100'
+                    className={`shrink-0 w-12 h-12 rounded-full grid place-items-center text-2xl transition-colors ${
+                      done ? 'bg-[#007AFF] text-white shadow-lg shadow-[#007AFF]/30' : 'bg-gray-50'
                     }`}
                   >
-                    {done ? '✓' : '📷'}
+                    {done ? '✓' : '📸'}
                   </div>
                   <div className="flex-1">
-                    <div className="font-semibold text-sm">{d}</div>
-                    <div className="text-[11px] text-brand-muted">
+                    <div className={`font-black text-base tracking-tight ${done ? 'text-[#007AFF]' : 'text-[#1A1A1A]'}`}>{d}</div>
+                    <div className={`text-[12px] font-bold mt-0.5 ${done ? 'text-[#007AFF]/70' : 'text-gray-400 uppercase tracking-widest'}`}>
                       {done
                         ? `${t('apply_detected', lang)} ${d}`
                         : t('apply_tap_photo', lang)}
@@ -184,24 +190,26 @@ export default function Apply() {
         </section>
 
         {/* Submit */}
-        <button
-          disabled={submitting}
-          onClick={handleSubmit}
-          className={`w-full btn-primary ${!allDocsDone ? 'opacity-70' : ''}`}
-        >
-          {submitting
-            ? lang === 'ta'
-              ? 'சமர்ப்பிக்கிறது...'
-              : 'Submitting...'
-            : t('apply_submit', lang)}
-        </button>
-        {!allDocsDone && (
-          <p className="text-xs text-brand-muted text-center">
-            {lang === 'ta'
-              ? 'ஆவணங்கள் இல்லாவிட்டாலும் சமர்ப்பிக்கலாம் — பின்னர் சேர்க்கலாம்'
-              : 'You can submit without photos — you can add them later'}
-          </p>
-        )}
+        <div className="pt-4">
+          <button
+            disabled={submitting}
+            onClick={handleSubmit}
+            className={`w-full bg-[#007AFF] text-white rounded-full px-5 py-5 text-xl font-black shadow-[0_8px_16px_rgba(0,122,255,0.25)] active:scale-95 transition-all flex items-center justify-center gap-3 ${!allDocsDone ? 'opacity-70 grayscale-[30%]' : ''}`}
+          >
+            {submitting
+              ? lang === 'ta'
+                ? 'சமர்ப்பிக்கிறது...'
+                : 'Submitting...'
+              : t('apply_submit', lang)}
+          </button>
+          {!allDocsDone && (
+            <p className="text-xs font-bold text-gray-400 text-center mt-3 tracking-wide">
+              {lang === 'ta'
+                ? 'ஆவணங்கள் இல்லாவிட்டாலும் சமர்ப்பிக்கலாம் — பின்னர் சேர்க்கலாம்'
+                : 'You can submit without photos — you can add them later'}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Active Scanner Overlay */}

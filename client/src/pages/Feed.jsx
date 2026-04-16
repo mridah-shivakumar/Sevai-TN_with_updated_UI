@@ -37,13 +37,13 @@ export default function Feed() {
   const districtStr = districtLabel ? (lang === 'ta' ? districtLabel.ta : districtLabel.en) : '';
 
   return (
-    <div className="min-h-full pb-24 bg-brand-bg">
+    <div className="min-h-[100dvh] pb-24 bg-brand-white">
       {/* Hero header */}
-      <header className="bg-brand-green text-white px-5 pt-6 pb-8 rounded-b-3xl shadow-md">
+      <header className="bg-white px-6 pt-8 pb-6 border-b border-gray-100 shadow-sm sticky top-0 z-40">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs opacity-80">{t('app_name', lang)}</div>
-            <div className="text-sm opacity-90">
+            <div className="text-xs font-bold text-brand-blue tracking-widest uppercase mb-1">{t('app_name', lang)}</div>
+            <div className="text-xl font-black tracking-tight text-brand-ink">
               {vault.name
                 ? lang === 'ta'
                   ? `வணக்கம், ${vault.name}`
@@ -51,26 +51,28 @@ export default function Feed() {
                 : lang === 'ta'
                 ? 'வணக்கம்'
                 : 'Hello'}
-              {districtStr && <span> · {districtStr}</span>}
+              {districtStr && <span className="text-gray-400 font-medium"> · {districtStr}</span>}
             </div>
           </div>
           <button
             onClick={() => setLang(lang === 'ta' ? 'en' : 'ta')}
-            className="!min-h-0 !min-w-0 text-xs bg-white/15 rounded-full px-3 py-1.5"
+            className="text-xs font-bold bg-gray-100 text-brand-ink rounded-full px-4 py-2 hover:bg-gray-200 transition-colors"
           >
-            {lang === 'ta' ? 'EN' : 'த'}
+            {lang === 'ta' ? 'EN' : 'தமிழ்'}
           </button>
         </div>
-        <div className="mt-5">
-          <div className="text-xs opacity-80 uppercase tracking-widest">
-            {lang === 'ta' ? 'உங்களுக்கு தகுதியானவை' : 'You qualify for'}
+        <div className="mt-6 flex bg-gray-50 rounded-2xl p-4 items-center gap-4 border border-gray-100">
+          <div className="w-14 h-14 bg-brand-black text-white rounded-xl flex items-center justify-center text-2xl font-black">
+            {eligible.length}
           </div>
-          <div className="flex items-baseline gap-3 mt-1">
-            <span className="text-5xl font-black text-brand-saffron">{eligible.length}</span>
-            <span className="text-sm opacity-90">
-              {lang === 'ta' ? 'திட்டங்கள்' : 'schemes'} · {formatRupees(totalValue)}
-              <span className="text-xs opacity-70">{t('wow_per_year', lang)}</span>
-            </span>
+          <div>
+            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+              {lang === 'ta' ? 'திட்டங்கள் | மொத்தம்' : 'Schemes | Total Value'}
+            </div>
+            <div className="text-2xl font-black text-brand-blue mt-0.5 tracking-tighter">
+              {formatRupees(totalValue)}
+              <span className="text-xs text-brand-ink font-semibold ml-1">{t('wow_per_year', lang)}</span>
+            </div>
           </div>
         </div>
       </header>

@@ -12,17 +12,23 @@ export default {
           'saffron-dark': '#E65100',
           bg: '#FAFAF5',
           amber: '#FFB300',
-          ink: '#1C1C1C',
           muted: '#6B6B6B',
+          black: '#000000',
+          white: '#FAFAFA',
+          ink: '#1A1A1A',
+          blue: '#007AFF', // Electric Blue
         },
       },
+      borderRadius: {
+        'bento': '24px',
+      },
       fontSize: {
-        body: ['16px', { lineHeight: '1.6' }],
-        head: ['24px', { lineHeight: '1.3' }],
-        xxl: ['32px', { lineHeight: '1.2' }],
+        body: ['18px', { lineHeight: '1.6', letterSpacing: '-0.01em' }],
+        head: ['28px', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: 'bold' }],
+        xxl: ['40px', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '900' }],
       },
       fontFamily: {
-        sans: ['"Noto Sans Tamil"', '"Inter"', 'system-ui', 'sans-serif'],
+        sans: ['"SF Pro Display"', '"Inter"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         card: '0 2px 8px rgba(0,0,0,0.06)',

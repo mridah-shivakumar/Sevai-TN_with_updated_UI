@@ -80,29 +80,27 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-full pb-24 bg-brand-bg">
-      <header className="bg-brand-green text-white px-5 pt-6 pb-6 rounded-b-3xl shadow-md">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">{t('profile_title', lang)}</h1>
-            <p className="text-xs opacity-80 mt-1">{vault.name || '—'}</p>
-          </div>
-          <button
-            onClick={() => setLang(lang === 'ta' ? 'en' : 'ta')}
-            className="!min-h-0 !min-w-0 text-xs bg-white/15 rounded-full px-3 py-1.5"
-          >
-            {lang === 'ta' ? 'EN' : 'த'}
-          </button>
+    <div className="min-h-[100dvh] pb-28 bg-[#FAFAFA] font-sans">
+      <header className="bg-white border-b border-gray-100 px-6 py-5 sticky top-0 z-30 shadow-sm flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-black text-[#1A1A1A] tracking-tight">{t('profile_title', lang)}</h1>
+          <p className="text-[12px] font-bold uppercase tracking-widest text-[#007AFF] mt-0.5">{vault.name || '—'}</p>
         </div>
+        <button
+          onClick={() => setLang(lang === 'ta' ? 'en' : 'ta')}
+          className="text-xs font-bold bg-gray-100 text-[#1A1A1A] rounded-full px-4 py-2 hover:bg-gray-200 transition-colors cursor-pointer"
+        >
+          {lang === 'ta' ? 'EN' : 'தமிழ்'}
+        </button>
       </header>
 
-      <div className="p-4 space-y-3">
+      <div className="p-5 space-y-5">
         {/* Privacy banner */}
-        <div className="bg-brand-green/10 text-brand-green-dark rounded-2xl p-4 flex gap-3 items-start">
-          <span className="text-2xl">🔒</span>
-          <div className="text-sm">
-            <div className="font-bold mb-0.5">{t('device_only', lang)}</div>
-            <div className="text-xs opacity-90">{t('profile_privacy', lang)}</div>
+        <div className="bg-white rounded-[24px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-gray-100 p-5 flex gap-4 items-start">
+          <span className="text-2xl bg-gray-50 h-12 w-12 rounded-full grid place-items-center shrink-0">🔒</span>
+          <div className="text-sm mt-0.5">
+            <div className="font-black text-[#1A1A1A] tracking-tight text-base mb-0.5">{t('device_only', lang)}</div>
+            <div className="text-[12px] text-gray-500 font-medium leading-snug">{t('profile_privacy', lang)}</div>
           </div>
         </div>
 
@@ -110,33 +108,35 @@ export default function Profile() {
         <DocumentScanner onDataExtracted={handleOcrData} lang={lang} />
 
         {/* Fields */}
-        <div className="card divide-y divide-gray-100">
+        <div className="bg-white rounded-[24px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-gray-100 divide-y divide-gray-100 p-3 pt-4">
           {EDITABLE_FIELDS.map((f) => (
-            <div key={f.key} className="py-3 first:pt-0 last:pb-0">
-              <div className="flex items-start justify-between gap-3">
+            <div key={f.key} className="py-4 first:pt-1 pl-2">
+              <div className="flex items-center justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <div className="text-[11px] uppercase tracking-wide text-brand-muted">
+                  <div className="text-[11px] font-bold uppercase tracking-widest text-gray-400">
                     {lang === 'ta' ? f.labelTa : f.labelEn}
                   </div>
                   {editing === f.key ? (
-                    <EditInput field={f} draft={draft} setDraft={setDraft} lang={lang} />
+                    <div className="mt-2 pr-3">
+                      <EditInput field={f} draft={draft} setDraft={setDraft} lang={lang} />
+                    </div>
                   ) : (
-                    <div className="font-semibold text-brand-ink mt-0.5 break-words">{renderValue(f)}</div>
+                    <div className="font-black text-[#1A1A1A] text-[16px] mt-1 tracking-tight break-words pr-4">{renderValue(f)}</div>
                   )}
                 </div>
                 {editing === f.key ? (
-                  <div className="flex gap-2">
-                    <button onClick={() => setEditing(null)} className="!min-h-0 px-3 py-1 text-sm text-brand-muted">
+                  <div className="flex gap-2 flex-col md:flex-row mt-2 md:mt-0 items-end md:items-center">
+                    <button onClick={() => setEditing(null)} className="!min-h-0 bg-gray-100 text-gray-600 rounded-full px-4 py-2 text-sm font-bold">
                       ✕
                     </button>
-                    <button onClick={saveEdit} className="!min-h-0 bg-brand-green text-white rounded-lg px-3 py-1 text-sm font-semibold">
+                    <button onClick={saveEdit} className="!min-h-0 bg-[#007AFF] text-white shadow-md shadow-[#007AFF]/30 rounded-full px-5 py-2 text-sm font-bold">
                       {t('save', lang)}
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={() => startEdit(f.key, vault[f.key])}
-                    className="!min-h-0 text-xs text-brand-green font-semibold underline underline-offset-2 px-2 py-1"
+                    className="!min-h-0 text-[12px] font-bold text-[#007AFF] bg-[#007AFF]/5 hover:bg-[#007AFF]/10 cursor-pointer rounded-full px-4 py-2 transition-colors active:scale-95"
                   >
                     {t('edit', lang)}
                   </button>
@@ -201,17 +201,19 @@ export default function Profile() {
         </button>
 
         {/* Reset */}
-        <button
-          onClick={() => {
-            if (confirm(lang === 'ta' ? 'சரி, புதிதாக தொடங்கவா?' : 'Reset and start fresh?')) {
-              resetVault();
-              location.href = '/';
-            }
-          }}
-          className="!min-h-0 block mx-auto text-xs text-brand-muted underline underline-offset-2 py-3"
-        >
-          {lang === 'ta' ? 'சுயவிவரத்தை அழி' : 'Reset profile'}
-        </button>
+        <div className="pt-6">
+          <button
+            onClick={() => {
+              if (confirm(lang === 'ta' ? 'விண்ணப்பத் தரவுகளை அழிக்கவா?' : 'Delete all saved data on this device?')) {
+                resetVault();
+                location.href = '/';
+              }
+            }}
+            className="!min-h-0 block mx-auto text-[13px] font-bold text-red-500 rounded-full px-6 py-3 bg-red-50 hover:bg-red-100 tracking-wide transition-colors"
+          >
+            {lang === 'ta' ? 'அனைத்து தரவையும் அழி' : 'Delete All Data'}
+          </button>
+        </div>
       </div>
 
       {showSahayak && <SahayakMode lang={lang} onExit={() => setShowSahayak(false)} />}

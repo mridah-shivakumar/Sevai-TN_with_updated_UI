@@ -7,6 +7,7 @@ import { useEligibility } from './hooks/useEligibility.js';
 import ChatOnboarding from './components/ChatOnboarding.jsx';
 import WowReveal from './components/WowReveal.jsx';
 import BottomNav from './components/BottomNav.jsx';
+import Landing from './pages/Landing.jsx';
 import Feed from './pages/Feed.jsx';
 import Applications from './pages/Applications.jsx';
 import Profile from './pages/Profile.jsx';
@@ -24,7 +25,7 @@ export default function App() {
 function Shell() {
   const { vault, setVault, ready } = useVault();
   const { lang, setLang } = useLanguage();
-  const [phase, setPhase] = useState('loading'); // loading | onboarding | reveal | app
+  const [phase, setPhase] = useState('loading'); // loading | landing | onboarding | reveal | app
   const loc = useLocation();
   const nav = useNavigate();
   const { eligible, totalValue } = useEligibility(vault);
@@ -34,7 +35,7 @@ function Shell() {
     if (vault.onboarding_complete) {
       setPhase('app');
     } else {
-      setPhase('onboarding');
+      setPhase('landing');
     }
   }, [ready, vault.onboarding_complete]);
 
@@ -54,8 +55,16 @@ function Shell() {
 
   if (phase === 'loading') {
     return (
-      <div className="h-full grid place-items-center text-brand-muted">
+      <div className="h-full grid place-items-center text-brand-muted bg-brand-white">
         {lang === 'ta' ? 'ஏற்றப்படுகிறது...' : 'Loading...'}
+      </div>
+    );
+  }
+
+  if (phase === 'landing') {
+    return (
+      <div className="h-full bg-brand-black w-full overflow-y-auto">
+        <Landing onStart={() => setPhase('onboarding')} lang={lang} setLang={setLang} />
       </div>
     );
   }

@@ -77,10 +77,10 @@ export default function SamjhaoButton({ scheme, lang }) {
     <div onClick={(e) => e.stopPropagation()}>
       <button
         onClick={handleClick}
-        className="w-full bg-brand-green text-white rounded-2xl px-5 py-4 text-lg font-bold shadow-card active:scale-95 transition-transform flex items-center justify-center gap-3"
+        className="w-full bg-brand-blue text-white rounded-full px-5 py-4 text-lg font-bold shadow-[0_8px_16px_rgba(0,122,255,0.25)] active:scale-95 transition-all flex items-center justify-center gap-3"
       >
         {state === 'loading' && (
-          <span className="inline-block">⏳</span>
+          <span className="inline-block animate-pulse">⏳</span>
         )}
         {state === 'playing' && (
           <span className="flex items-end h-6 gap-0.5 text-white">
@@ -109,11 +109,11 @@ export default function SamjhaoButton({ scheme, lang }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-3 space-y-1.5 text-[15px] text-brand-ink overflow-hidden"
+            className="mt-4 space-y-2 text-[16px] font-medium text-brand-ink overflow-hidden px-2"
           >
             {bullets.map((b, i) => (
-              <li key={i} className="flex gap-2">
-                <span className="text-brand-green font-bold">✓</span>
+              <li key={i} className="flex gap-3">
+                <span className="text-brand-blue font-black mt-0.5">•</span>
                 <span>{b.replace(/^[✓\-•]\s*/, '')}</span>
               </li>
             ))}

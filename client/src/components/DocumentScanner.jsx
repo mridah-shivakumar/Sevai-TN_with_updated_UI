@@ -147,13 +147,14 @@ export default function DocumentScanner({ onDataExtracted, lang = 'en', autoOpen
     return (
       <button
         onClick={openCamera}
-        className="w-full flex items-center justify-center gap-3 p-4 mb-4 rounded-xl bg-gradient-to-r from-brand-green to-brand-green-dark text-white shadow-lg active:scale-95 transition-transform"
+        className="w-full flex items-center justify-center gap-4 px-5 py-5 mb-6 rounded-full bg-[#007AFF] text-white shadow-[0_8px_16px_rgba(0,122,255,0.25)] active:scale-95 transition-all outline-none"
       >
-        <span className="text-2xl">📸</span>
-        <div className="text-left">
-          <div className="font-bold">{lang === 'ta' ? 'ஸ்மார்ட் ஸ்கேன்' : 'Smart Scan ID'}</div>
-          <div className="text-xs opacity-80">{lang === 'ta' ? 'தானாக நிரப்ப ஐடியை ஸ்கேன் செய்க' : 'Auto-fill form using camera'}</div>
+        <span className="text-3xl drop-shadow-md">📸</span>
+        <div className="text-left flex-1">
+          <div className="font-black text-lg tracking-tight leading-tight">{lang === 'ta' ? 'ஸ்மார்ட் ஸ்கேன்' : 'Smart Scan ID'}</div>
+          <div className="text-[12px] font-bold text-white/80 uppercase tracking-wider">{lang === 'ta' ? 'தானாக நிரப்ப ஐடியை ஸ்கேன் செய்க' : 'Auto-fill form using camera'}</div>
         </div>
+        <span className="text-white/60 bg-white/20 rounded-full w-8 h-8 flex items-center justify-center text-xl">›</span>
       </button>
     );
   }

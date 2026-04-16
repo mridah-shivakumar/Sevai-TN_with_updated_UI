@@ -14,7 +14,7 @@ export default function SchemeCard({ scheme, vault, lang, compact = false }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       onClick={() => nav(`/scheme/${scheme.id}`)}
-      className="card cursor-pointer hover:shadow-cardHover transition-shadow"
+      className="card cursor-pointer border border-gray-100 hover:border-brand-blue/30 shadow-sm hover:shadow-xl transition-all active:scale-[0.98] mb-4"
     >
       {/* Top row: emoji + title + benefit */}
       <div className="flex items-start gap-3">

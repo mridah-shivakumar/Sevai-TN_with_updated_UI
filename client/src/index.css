@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,11 +14,12 @@ body,
 
 body {
   margin: 0;
-  font-family: 'Noto Sans Tamil', 'Inter', system-ui, sans-serif;
-  background-color: #fafaf5;
-  color: #1c1c1c;
-  font-size: 16px;
+  font-family: 'SF Pro Display', 'Inter', system-ui, sans-serif;
+  background-color: #FAFAFA;
+  color: #1A1A1A;
+  font-size: 18px;
   line-height: 1.6;
+  letter-spacing: -0.01em;
   overscroll-behavior-y: none;
 }
 
@@ -44,22 +47,34 @@ button,
 
 @layer components {
   .btn-primary {
-    @apply bg-brand-green text-white font-semibold rounded-2xl px-6 py-4 text-lg shadow-card active:scale-95 transition-transform;
+    @apply bg-brand-ink text-white font-bold rounded-full px-6 py-4 text-lg shadow-xl active:scale-95 transition-transform;
   }
   .btn-secondary {
-    @apply bg-white text-brand-green border-2 border-brand-green font-semibold rounded-2xl px-6 py-4 text-lg active:scale-95 transition-transform;
+    @apply bg-white text-brand-ink border-[1.5px] border-gray-200 font-bold rounded-full px-6 py-4 text-lg active:scale-95 transition-transform;
   }
   .btn-saffron {
-    @apply bg-brand-saffron text-white font-semibold rounded-2xl px-6 py-4 text-lg shadow-card active:scale-95 transition-transform;
+    @apply bg-brand-saffron text-white font-bold rounded-full px-6 py-4 text-lg shadow-xl active:scale-95 transition-transform;
   }
   .chip {
-    @apply inline-flex items-center justify-center rounded-full bg-white border border-gray-200 px-4 py-2 text-sm font-medium;
+    @apply inline-flex items-center justify-center rounded-full bg-white border border-gray-200 px-4 py-2 text-sm font-bold;
   }
   .card {
-    @apply bg-white rounded-2xl shadow-card p-5;
+    @apply bg-white rounded-[24px] shadow-card p-6;
   }
   .amber-banner {
     @apply bg-brand-amber/20 border border-brand-amber text-brand-ink rounded-xl px-4 py-3 text-sm;
+  }
+}
+
+@layer utilities {
+  .neo-glass {
+    @apply bg-white/20 backdrop-blur-xl border border-white/40 shadow-lg;
+  }
+  .neo-glass-dark {
+    @apply bg-black/40 backdrop-blur-3xl border border-white/10 shadow-2xl;
+  }
+  .text-shadow-glow {
+    text-shadow: 0 0 20px rgba(0, 122, 255, 0.4);
   }
 }
 

@@ -35,10 +35,10 @@ export default function Applications() {
   }, []);
 
   return (
-    <div className="min-h-full pb-24 bg-brand-bg">
-      <header className="bg-brand-green text-white px-5 pt-6 pb-6 rounded-b-3xl shadow-md">
-        <h1 className="text-2xl font-bold">{t('nav_apps', lang)}</h1>
-        <p className="text-sm opacity-85 mt-1">
+    <div className="min-h-[100dvh] pb-28 bg-[#FAFAFA] font-sans">
+      <header className="bg-white border-b border-gray-100 px-6 py-5 sticky top-0 z-30 shadow-sm">
+        <h1 className="text-2xl font-black text-[#1A1A1A] tracking-tight">{t('nav_apps', lang)}</h1>
+        <p className="text-[12px] font-bold uppercase tracking-widest text-[#007AFF] mt-1">
           {lang === 'ta'
             ? `${apps.length} விண்ணப்பம் கண்காணிக்கப்படுகிறது`
             : `${apps.length} application${apps.length === 1 ? '' : 's'} tracked`}
